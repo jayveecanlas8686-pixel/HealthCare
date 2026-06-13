@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Profile | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Doctor Profile</h1>
+      <p>View detailed information, availability and patient reviews.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div id="doctor-detail-container">
+        <div class="doctor-detail-wrap">
+          <div class="doctor-detail-main">
+            <div class="card">
+              <div class="card-body">
+                <div class="profile-header-card">
+                  <div id="doctor-avatar"></div>
+                  <div class="profile-header-info">
+                    <div class="profile-header-name" id="doctor-name"></div>
+                    <div class="profile-header-specialty" id="doctor-specialty"></div>
+                    <div id="doctor-rating" class="mb-1"></div>
+                    <div class="profile-header-meta" id="doctor-meta"></div>
+                    <button class="btn btn-outline btn-sm" id="doctor-wishlist-btn">🤍 Save to Wishlist</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h3>About</h3>
+              <p id="doctor-about"></p>
+            </div>
+
+            <div class="detail-section">
+              <h3>Education &amp; Training</h3>
+              <ul class="education-list" id="doctor-education"></ul>
+            </div>
+
+            <div class="detail-section">
+              <h3>Languages Spoken</h3>
+              <div id="doctor-languages"></div>
+            </div>
+
+            <div class="detail-section">
+              <h3>Weekly Availability</h3>
+              <div class="availability-summary" id="availability-summary"></div>
+            </div>
+
+            <div class="detail-section">
+              <h3>Patient Reviews</h3>
+              <div class="reviews-summary" id="reviews-summary-container"></div>
+              <div class="reviews-list" id="doctor-reviews-list"></div>
+            </div>
+
+            <div class="detail-section">
+              <h3>Related Doctors</h3>
+              <div class="related-doctors-grid" id="related-doctors"></div>
+            </div>
+          </div>
+
+          <aside class="doctor-detail-aside">
+            <div class="booking-side-card">
+              <div class="text-light" style="font-size:0.85rem;">Consultation Fee</div>
+              <div class="booking-side-fee" id="sidebar-fee"></div>
+              <div class="badge badge-success" id="sidebar-next-available"></div>
+              <a href="#" class="btn btn-primary" id="sidebar-book-btn">📅 Book Appointment</a>
+            </div>
+            <div class="clinic-map">
+              <div class="map-pin">📍</div>
+              <p class="mb-0" id="sidebar-map-address"></p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/doctors.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ active: 'doctors' });
+      initDoctorDetailsPage();
+    });
+  </script>
+</body>
+</html>

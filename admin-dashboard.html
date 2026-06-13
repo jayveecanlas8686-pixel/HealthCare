@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-profile">
+            <div id="sidebar-avatar"></div>
+            <div class="name" id="sidebar-name">—</div>
+            <div class="role">Administrator</div>
+          </div>
+          <h4>Menu</h4>
+          <nav class="sidebar-nav">
+            <a href="admin-dashboard.html" class="active">🏠 Dashboard</a>
+            <a href="billing.html">💳 Billing Overview</a>
+            <a href="notifications.html">🔔 Notifications</a>
+            <a href="settings.html">⚙️ Settings</a>
+          </nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-content-header">
+            <div>
+              <h2 id="dashboard-welcome">Welcome back!</h2>
+              <p class="text-light mb-0">Platform overview and management tools.</p>
+            </div>
+            <button class="btn btn-primary" id="add-doctor-btn">+ Add Doctor</button>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">🧑‍🤝‍🧑</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-patients">0</div>
+                <div class="stat-label">Total Patients</div>
+              </div>
+            </div>
+            <div class="stat-card stat-teal">
+              <div class="stat-icon">🩺</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-doctors">0</div>
+                <div class="stat-label">Active Doctors</div>
+              </div>
+            </div>
+            <div class="stat-card stat-warning">
+              <div class="stat-icon">📅</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-appointments">0</div>
+                <div class="stat-label">Total Appointments</div>
+              </div>
+            </div>
+            <div class="stat-card stat-success">
+              <div class="stat-icon">💰</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-revenue">$0.00</div>
+                <div class="stat-label">Total Revenue</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Appointments (Last 7 Days)</h3>
+            <div class="chart-bars" id="appointments-chart"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Revenue (Last 7 Days)</h3>
+            <div class="chart-bars" id="revenue-chart"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Appointment Status Breakdown</h3>
+            <div class="status-bars" id="appt-status-bars"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Appointments by Specialty</h3>
+            <div class="donut-wrap">
+              <div class="donut" id="specialty-donut"></div>
+              <div class="donut-legend" id="specialty-legend"></div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Recent Appointments</h3>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-appointments-table"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="card-header" style="padding:0; border-bottom:none; margin-bottom:1.25rem;">
+              <h3 class="mb-0">Doctor Management</h3>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Doctor</th>
+                    <th>Specialty</th>
+                    <th>Fee</th>
+                    <th>Rating</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="doctor-management-table"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="card-header" style="padding:0; border-bottom:none; margin-bottom:1.25rem;">
+              <h3 class="mb-0">Patient Management</h3>
+              <input type="text" class="form-control" id="patient-search-input" placeholder="Search patients by name or email..." style="max-width:280px;">
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Appointments</th>
+                    <th>Joined</th>
+                  </tr>
+                </thead>
+                <tbody id="patient-management-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['admin'], active: '' });
+      const user = getCurrentUser();
+      if (user) {
+        document.getElementById('sidebar-avatar').innerHTML = avatarHTML(user.name, user.avatar, 64);
+        document.getElementById('sidebar-name').textContent = user.name;
+      }
+      initAdminDashboard();
+    });
+  </script>
+</body>
+</html>

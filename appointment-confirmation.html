@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmed | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div id="confirmation-container">
+        <div class="confirmation-hero">
+          <div class="confirmation-check">✅</div>
+          <h1>Appointment Booked Successfully!</h1>
+          <p>A confirmation has been sent to your registered email and notifications.</p>
+          <div class="booking-ref-badge">Reference: <span id="conf-ref">—</span></div>
+        </div>
+
+        <div class="confirmation-grid">
+          <div class="confirmation-card">
+            <h3>👨‍⚕️ Doctor &amp; Location</h3>
+            <div id="conf-doctor-info"></div>
+          </div>
+          <div class="confirmation-card">
+            <h3>📅 Appointment Details</h3>
+            <div id="conf-appointment-info"></div>
+          </div>
+          <div class="confirmation-card">
+            <h3>🧑 Patient Information</h3>
+            <div id="conf-patient-info"></div>
+          </div>
+          <div class="confirmation-card">
+            <h3>💳 Payment Summary</h3>
+            <div id="conf-payment-info"></div>
+          </div>
+        </div>
+
+        <div class="video-placeholder mb-2" id="conf-video-box" style="display:none;">
+          <div style="font-size:2rem;">🎥</div>
+          <h3 class="mb-1">Online Consultation</h3>
+          <p class="text-light mb-0">A video call link will be made available in your dashboard 15 minutes before your scheduled appointment time. Please ensure you have a stable internet connection and a working camera/microphone.</p>
+        </div>
+
+        <div class="confirmation-actions">
+          <a href="my-appointments.html" class="btn btn-primary">View My Appointments</a>
+          <a href="patient-dashboard.html" class="btn btn-outline">Go to Dashboard</a>
+          <button class="btn btn-outline" id="conf-print-btn">🖨️ Print Confirmation</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/appointments.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['patient'], active: 'doctors' });
+      initConfirmationPage();
+    });
+  </script>
+</body>
+</html>

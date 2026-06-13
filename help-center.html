@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help Center | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Help Center</h1>
+      <p>Find quick answers to common questions about booking, appointments, payments and more.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="help-search">
+        <span class="help-search-icon">🔍</span>
+        <input type="text" id="faq-search" placeholder="Search for answers (e.g. reschedule, payment, reviews)...">
+      </div>
+      <div class="help-categories" id="help-categories"></div>
+      <div class="faq-accordion" id="faq-accordion"></div>
+
+      <div class="text-center mt-3">
+        <p class="text-light">Still need help? <a href="contact.html">Contact our support team</a> and we'll get back to you as soon as possible.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    let helpState = { search: '', category: 'All' };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ active: 'help' });
+      renderCategories();
+      renderFaqs();
+      bindFaqSearch();
+    });
+
+    function renderCategories() {
+      const categories = ['All', ...new Set(HELP_FAQS.map(f => f.category))];
+      const container = document.getElementById('help-categories');
+      container.innerHTML = categories.map(c => `
+        <button class="btn ${c === helpState.category ? 'btn-primary' : 'btn-outline'} btn-sm" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>
+      `).join('');
+      container.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          helpState.category = btn.dataset.cat;
+          renderCategories();
+          renderFaqs();
+        });
+      });
+    }
+
+    function renderFaqs() {
+      let faqs = HELP_FAQS;
+      if (helpState.category !== 'All') {
+        faqs = faqs.filter(f => f.category === helpState.category);
+      }
+      if (helpState.search) {
+        const q = helpState.search.toLowerCase();
+        faqs = faqs.filter(f => f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q));
+      }
+
+      const container = document.getElementById('faq-accordion');
+      if (faqs.length === 0) {
+        container.innerHTML = renderEmptyState('❓', 'No Results Found', 'Try a different search term or category, or contact our support team for help.');
+        return;
+      }
+
+      container.innerHTML = faqs.map((f, i) => `
+        <div class="faq-item" data-index="${i}">
+          <div class="faq-question">
+            <span>${escapeHtml(f.question)}</span>
+            <span class="faq-arrow">▾</span>
+          </div>
+          <div class="faq-answer"><p class="mb-0">${escapeHtml(f.answer)}</p></div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.faq-item').forEach(item => {
+        item.querySelector('.faq-question').addEventListener('click', () => {
+          item.classList.toggle('open');
+        });
+      });
+    }
+
+    function bindFaqSearch() {
+      document.getElementById('faq-search').addEventListener('input', debounce((e) => {
+        helpState.search = e.target.value.trim();
+        renderFaqs();
+      }, 250));
+    }
+  </script>
+</body>
+</html>

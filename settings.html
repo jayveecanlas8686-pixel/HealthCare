@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-profile">
+            <div id="sidebar-avatar"></div>
+            <div class="name" id="sidebar-name">—</div>
+            <div class="role" id="sidebar-role">—</div>
+          </div>
+          <h4>Menu</h4>
+          <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-content-header">
+            <div>
+              <h2>Settings</h2>
+              <p class="text-light mb-0">Manage your profile, security, appearance and notification preferences.</p>
+            </div>
+          </div>
+
+          <div class="settings-layout">
+            <nav class="settings-nav" id="settings-nav">
+              <a href="#profile-section" class="active">👤 Profile</a>
+              <a href="#security-section">🔒 Security</a>
+              <a href="#appearance-section">🎨 Appearance</a>
+              <a href="#notifications-section">🔔 Notifications</a>
+              <a href="#practice-section" id="practice-nav-link" style="display:none;">🩺 Practice Profile</a>
+              <a href="#account-section">⚠️ Account</a>
+            </nav>
+
+            <div>
+              <div class="settings-section" id="profile-section">
+                <h3>Profile Information</h3>
+                <form id="profile-form">
+                  <div class="form-group">
+                    <label>Profile Photo URL</label>
+                    <div style="display:flex; align-items:center; gap:1rem;">
+                      <div id="profile-avatar-preview"></div>
+                      <input type="url" class="form-control" id="profile-avatar" placeholder="https://example.com/photo.jpg" style="flex:1;">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="profile-name">Full Name</label>
+                      <input type="text" class="form-control" id="profile-name" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="profile-email">Email Address</label>
+                      <input type="email" class="form-control" id="profile-email" disabled>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="profile-phone">Phone Number</label>
+                      <input type="tel" class="form-control" id="profile-phone">
+                    </div>
+                    <div class="form-group" id="profile-dob-group">
+                      <label for="profile-dob">Date of Birth</label>
+                      <input type="date" class="form-control" id="profile-dob">
+                    </div>
+                  </div>
+                  <div class="form-row" id="profile-gender-row">
+                    <div class="form-group">
+                      <label for="profile-gender">Gender</label>
+                      <select class="form-control" id="profile-gender">
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="profile-address">Address</label>
+                      <input type="text" class="form-control" id="profile-address" placeholder="Street, City, State, ZIP">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+              </div>
+
+              <div class="settings-section" id="security-section">
+                <h3>Change Password</h3>
+                <form id="password-form">
+                  <div class="form-group">
+                    <label for="current-password">Current Password</label>
+                    <input type="password" class="form-control" id="current-password" autocomplete="current-password">
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="new-password">New Password</label>
+                      <input type="password" class="form-control" id="new-password" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                      <label for="confirm-new-password">Confirm New Password</label>
+                      <input type="password" class="form-control" id="confirm-new-password" autocomplete="new-password">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update Password</button>
+                </form>
+              </div>
+
+              <div class="settings-section" id="appearance-section">
+                <h3>Appearance</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+                  <div>
+                    <strong>Dark Mode</strong>
+                    <p class="text-light mb-0" style="font-size:0.85rem;">Switch between light and dark color themes.</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="theme-toggle-input">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="settings-section" id="notifications-section">
+                <h3>Notification Preferences</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                  <div>
+                    <strong>Appointment Reminders</strong>
+                    <p class="text-light mb-0" style="font-size:0.85rem;">Get notified before upcoming appointments.</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notif-appointments">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                  <div>
+                    <strong>Prescription &amp; Record Updates</strong>
+                    <p class="text-light mb-0" style="font-size:0.85rem;">Alerts when new prescriptions or medical records are added.</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notif-records">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                  <div>
+                    <strong>Billing &amp; Payment Alerts</strong>
+                    <p class="text-light mb-0" style="font-size:0.85rem;">Notifications about new invoices and payment status.</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notif-billing">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:0.75rem 0; border-bottom:1px solid var(--border);">
+                  <div>
+                    <strong>Email Notifications</strong>
+                    <p class="text-light mb-0" style="font-size:0.85rem;">Receive a copy of important notifications by email (simulated).</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notif-email">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:0.75rem 0;">
+                  <div>
+                    <strong>Promotions &amp; Newsletter</strong>
+                    <p class="text-light mb-0" style="font-size:0.85rem;">Occasional updates about new features, doctors and offers.</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="notif-promo">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <button type="button" class="btn btn-primary mt-2" id="save-notif-prefs-btn">Save Preferences</button>
+              </div>
+
+              <div class="settings-section" id="practice-section" style="display:none;">
+                <h3>Practice Profile</h3>
+                <p class="text-light" style="font-size:0.85rem;">This information is shown to patients on your public doctor profile.</p>
+                <form id="practice-form">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="practice-specialty">Specialty</label>
+                      <input type="text" class="form-control" id="practice-specialty" disabled>
+                    </div>
+                    <div class="form-group">
+                      <label for="practice-experience">Years of Experience</label>
+                      <input type="number" class="form-control" id="practice-experience" min="0">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="practice-fee">Consultation Fee ($)</label>
+                      <input type="number" class="form-control" id="practice-fee" min="0">
+                    </div>
+                    <div class="form-group">
+                      <label for="practice-languages">Languages (comma separated)</label>
+                      <input type="text" class="form-control" id="practice-languages" placeholder="English, Spanish">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="practice-education">Education</label>
+                    <input type="text" class="form-control" id="practice-education" placeholder="MD, Medical School · Residency, Hospital">
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="practice-clinic">Clinic / Location Name</label>
+                      <input type="text" class="form-control" id="practice-clinic">
+                    </div>
+                    <div class="form-group">
+                      <label for="practice-city">City</label>
+                      <input type="text" class="form-control" id="practice-city">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="practice-address">Clinic Address</label>
+                    <input type="text" class="form-control" id="practice-address">
+                  </div>
+                  <div class="form-group">
+                    <label for="practice-about">About / Bio</label>
+                    <textarea class="form-control" id="practice-about" rows="4"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Save Practice Profile</button>
+                </form>
+              </div>
+
+              <div class="settings-section" id="account-section">
+                <h3>Account</h3>
+                <div class="danger-zone">
+                  <p><strong>Reset Demo Data</strong></p>
+                  <p class="text-light" style="font-size:0.85rem; margin-bottom:0.5rem;">Restore all appointments, records, prescriptions, billing and notifications to their original demo state. Your login session and theme preference are kept.</p>
+                  <button type="button" class="btn btn-outline" style="margin-bottom:0.5rem;" onclick="handleResetDemo()">🔄 Reset Demo Data</button>
+                  <hr style="border-color: var(--border); margin: 1rem 0;">
+                  <p><strong>Log Out</strong></p>
+                  <p class="text-light" style="font-size:0.85rem; margin-bottom:0.5rem;">Sign out of your MediCare+ account on this device.</p>
+                  <button type="button" class="btn btn-danger" onclick="logout()">🚪 Log Out</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['patient', 'doctor', 'admin'], active: '' });
+      renderSidebar('settings');
+      bindSettingsNav();
+      initSettingsPage();
+    });
+
+    function renderSidebar(activeKey) {
+      const user = getCurrentUser();
+      if (!user) return;
+      document.getElementById('sidebar-avatar').innerHTML = avatarHTML(user.name, user.avatar, 64);
+      document.getElementById('sidebar-name').textContent = user.name;
+      document.getElementById('sidebar-role').textContent = user.role;
+
+      const patientLinks = [
+        { href: 'patient-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'my-appointments.html', icon: '📅', label: 'My Appointments', key: 'appointments' },
+        { href: 'doctors.html', icon: '🩺', label: 'Find Doctors', key: 'doctors' },
+        { href: 'medical-records.html', icon: '📋', label: 'Medical Records', key: 'records' },
+        { href: 'prescriptions.html', icon: '💊', label: 'Prescriptions', key: 'prescriptions' },
+        { href: 'billing.html', icon: '💳', label: 'Billing & Invoices', key: 'billing' },
+        { href: 'calendar.html', icon: '🗓️', label: 'Calendar', key: 'calendar' },
+        { href: 'reviews.html', icon: '⭐', label: 'My Reviews', key: 'reviews' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const doctorLinks = [
+        { href: 'doctor-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'my-appointments.html', icon: '📅', label: 'Appointments', key: 'appointments' },
+        { href: 'medical-records.html', icon: '📋', label: 'Medical Records', key: 'records' },
+        { href: 'prescriptions.html', icon: '💊', label: 'Prescriptions', key: 'prescriptions' },
+        { href: 'billing.html', icon: '💳', label: 'Billing & Invoices', key: 'billing' },
+        { href: 'calendar.html', icon: '🗓️', label: 'My Schedule', key: 'calendar' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const adminLinks = [
+        { href: 'admin-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'billing.html', icon: '💳', label: 'Billing Overview', key: 'billing' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const links = user.role === 'doctor' ? doctorLinks : user.role === 'admin' ? adminLinks : patientLinks;
+
+      document.getElementById('sidebar-nav').innerHTML = links.map(l => `
+        <a href="${l.href}" class="${l.key === activeKey ? 'active' : ''}">${l.icon} ${l.label}</a>
+      `).join('');
+    }
+
+    function bindSettingsNav() {
+      const links = document.querySelectorAll('#settings-nav a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          links.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        });
+      });
+    }
+
+    function initSettingsPage() {
+      const user = getCurrentUser();
+      if (!user) return;
+
+      // ---- Profile section ----
+      document.getElementById('profile-avatar-preview').innerHTML = avatarHTML(user.name, user.avatar, 64);
+      document.getElementById('profile-avatar').value = user.avatar || '';
+      document.getElementById('profile-name').value = user.name || '';
+      document.getElementById('profile-email').value = user.email || '';
+      document.getElementById('profile-phone').value = user.phone || '';
+
+      if (user.role === 'patient') {
+        document.getElementById('profile-dob').value = user.dob || '';
+        document.getElementById('profile-gender').value = user.gender || '';
+        document.getElementById('profile-address').value = user.address || '';
+      } else {
+        document.getElementById('profile-dob-group').style.display = 'none';
+        document.getElementById('profile-gender-row').style.display = 'none';
+      }
+
+      document.getElementById('profile-avatar').addEventListener('input', (e) => {
+        document.getElementById('profile-avatar-preview').innerHTML = avatarHTML(user.name, e.target.value.trim(), 64);
+      });
+
+      document.getElementById('profile-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const updates = {
+          name: document.getElementById('profile-name').value.trim() || user.name,
+          phone: document.getElementById('profile-phone').value.trim(),
+          avatar: document.getElementById('profile-avatar').value.trim()
+        };
+        if (user.role === 'patient') {
+          updates.dob = document.getElementById('profile-dob').value;
+          updates.gender = document.getElementById('profile-gender').value;
+          updates.address = document.getElementById('profile-address').value.trim();
+        }
+
+        const updated = DB.update(DB.KEYS.USERS, user.id, updates);
+        DB.set(DB.KEYS.CURRENT_USER, updated);
+
+        if (user.role === 'doctor' && user.doctorId) {
+          DB.update(DB.KEYS.DOCTORS, user.doctorId, { name: updates.name, photo: updates.avatar });
+        }
+
+        document.getElementById('sidebar-avatar').innerHTML = avatarHTML(updated.name, updated.avatar, 64);
+        document.getElementById('sidebar-name').textContent = updated.name;
+        showToast('Profile updated successfully.', 'success');
+      });
+
+      // ---- Security section ----
+      document.getElementById('password-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const current = document.getElementById('current-password').value;
+        const next = document.getElementById('new-password').value;
+        const confirm = document.getElementById('confirm-new-password').value;
+        const latestUser = DB.findById(DB.KEYS.USERS, user.id);
+
+        if (!current || current !== latestUser.password) {
+          showToast('Current password is incorrect.', 'error');
+          return;
+        }
+        if (!next || next.length < 6) {
+          showToast('New password must be at least 6 characters.', 'error');
+          return;
+        }
+        if (next !== confirm) {
+          showToast('New passwords do not match.', 'error');
+          return;
+        }
+
+        const updated = DB.update(DB.KEYS.USERS, user.id, { password: next });
+        DB.set(DB.KEYS.CURRENT_USER, updated);
+        document.getElementById('password-form').reset();
+        showToast('Password updated successfully.', 'success');
+      });
+
+      // ---- Appearance section ----
+      const themeToggle = document.getElementById('theme-toggle-input');
+      themeToggle.checked = getTheme() === 'dark';
+      themeToggle.addEventListener('change', () => {
+        toggleTheme();
+      });
+
+      // ---- Notification preferences ----
+      const allSettings = DB.get(DB.KEYS.SETTINGS) || {};
+      const prefs = (allSettings[user.id] && allSettings[user.id].notifications) || {
+        appointments: true, records: true, billing: true, email: true, promo: false
+      };
+      document.getElementById('notif-appointments').checked = !!prefs.appointments;
+      document.getElementById('notif-records').checked = !!prefs.records;
+      document.getElementById('notif-billing').checked = !!prefs.billing;
+      document.getElementById('notif-email').checked = !!prefs.email;
+      document.getElementById('notif-promo').checked = !!prefs.promo;
+
+      document.getElementById('save-notif-prefs-btn').addEventListener('click', () => {
+        const all = DB.get(DB.KEYS.SETTINGS) || {};
+        all[user.id] = all[user.id] || {};
+        all[user.id].notifications = {
+          appointments: document.getElementById('notif-appointments').checked,
+          records: document.getElementById('notif-records').checked,
+          billing: document.getElementById('notif-billing').checked,
+          email: document.getElementById('notif-email').checked,
+          promo: document.getElementById('notif-promo').checked
+        };
+        DB.set(DB.KEYS.SETTINGS, all);
+        showToast('Notification preferences saved.', 'success');
+      });
+
+      // ---- Practice profile (doctors only) ----
+      if (user.role === 'doctor' && user.doctorId) {
+        const doctor = DB.findById(DB.KEYS.DOCTORS, user.doctorId);
+        if (doctor) {
+          document.getElementById('practice-nav-link').style.display = '';
+          document.getElementById('practice-section').style.display = '';
+
+          document.getElementById('practice-specialty').value = doctor.specialty || '';
+          document.getElementById('practice-experience').value = doctor.experience || 0;
+          document.getElementById('practice-fee').value = doctor.consultationFee || 0;
+          document.getElementById('practice-languages').value = (doctor.languages || []).join(', ');
+          document.getElementById('practice-education').value = doctor.education || '';
+          document.getElementById('practice-clinic').value = doctor.clinicLocation || '';
+          document.getElementById('practice-city').value = doctor.city || '';
+          document.getElementById('practice-address').value = doctor.address || '';
+          document.getElementById('practice-about').value = doctor.about || '';
+
+          document.getElementById('practice-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const languages = document.getElementById('practice-languages').value
+              .split(',').map(s => s.trim()).filter(Boolean);
+
+            DB.update(DB.KEYS.DOCTORS, user.doctorId, {
+              experience: Number(document.getElementById('practice-experience').value) || 0,
+              consultationFee: Number(document.getElementById('practice-fee').value) || 0,
+              languages: languages.length ? languages : ['English'],
+              education: document.getElementById('practice-education').value.trim(),
+              clinicLocation: document.getElementById('practice-clinic').value.trim(),
+              city: document.getElementById('practice-city').value.trim(),
+              address: document.getElementById('practice-address').value.trim(),
+              about: document.getElementById('practice-about').value.trim()
+            });
+
+            showToast('Practice profile updated successfully.', 'success');
+          });
+        }
+      }
+    }
+  </script>
+</body>
+</html>

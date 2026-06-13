@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Doctors | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Find Your Doctor</h1>
+      <p>Search and filter from our network of verified specialists to find the right care for you.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="search-results-layout">
+        <aside class="filters-sidebar">
+          <h3>Filters <button class="btn btn-outline btn-xs" id="clear-filters-btn">Clear All</button></h3>
+
+          <div class="filter-section">
+            <h4>Specialty</h4>
+            <div class="checkbox-group" id="specialty-filters"></div>
+          </div>
+
+          <div class="filter-section">
+            <h4>Max Consultation Fee</h4>
+            <input type="range" id="price-range-filter" class="form-control" min="50" max="250" step="10">
+            <div class="text-light mt-1" id="price-range-label" style="font-size:0.85rem;"></div>
+          </div>
+
+          <div class="filter-section">
+            <h4>Minimum Rating</h4>
+            <div class="checkbox-group">
+              <label class="checkbox-label"><input type="radio" name="rating-filter" class="rating-filter-radio" value="0" checked> Any Rating</label>
+              <label class="checkbox-label"><input type="radio" name="rating-filter" class="rating-filter-radio" value="4"> 4 ★ &amp; up</label>
+              <label class="checkbox-label"><input type="radio" name="rating-filter" class="rating-filter-radio" value="4.5"> 4.5 ★ &amp; up</label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h4>Location</h4>
+            <select id="city-filter" class="form-control"></select>
+          </div>
+
+          <div class="filter-section">
+            <label class="checkbox-label">
+              <input type="checkbox" id="available-only-cb"> Available Today Only
+            </label>
+          </div>
+        </aside>
+
+        <div>
+          <div class="search-bar-inline">
+            <input type="text" id="doctor-search-input" class="form-control" placeholder="Search by doctor name, specialty or location...">
+          </div>
+
+          <div class="results-header">
+            <div class="results-count" id="results-count"></div>
+            <div class="sort-wrapper">
+              <label for="doctor-sort">Sort by</label>
+              <select id="doctor-sort" class="form-control">
+                <option value="rating-desc">Highest Rated</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="experience-desc">Most Experienced</option>
+                <option value="name-asc">Name (A-Z)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="doctors-grid" id="doctors-results"></div>
+          <div id="doctors-pagination"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/doctors.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ active: 'doctors' });
+      initDoctorsPage();
+    });
+  </script>
+</body>
+</html>

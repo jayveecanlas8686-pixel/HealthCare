@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Dashboard | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-profile">
+            <div id="sidebar-avatar"></div>
+            <div class="name" id="sidebar-name">—</div>
+            <div class="role">Doctor</div>
+          </div>
+          <h4>Menu</h4>
+          <nav class="sidebar-nav">
+            <a href="doctor-dashboard.html" class="active">🏠 Dashboard</a>
+            <a href="my-appointments.html">📅 Appointments</a>
+            <a href="medical-records.html">📋 Medical Records</a>
+            <a href="prescriptions.html">💊 Prescriptions</a>
+            <a href="billing.html">💳 Billing &amp; Invoices</a>
+            <a href="calendar.html">🗓️ My Schedule</a>
+            <a href="notifications.html">🔔 Notifications</a>
+            <a href="settings.html">⚙️ Settings</a>
+          </nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-content-header">
+            <div>
+              <h2 id="dashboard-welcome">Welcome back!</h2>
+              <p class="text-light mb-0">Here's your practice overview for today.</p>
+            </div>
+            <a href="my-appointments.html" class="btn btn-primary">View Appointments</a>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">🗓️</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-today">0</div>
+                <div class="stat-label">Today's Appointments</div>
+              </div>
+            </div>
+            <div class="stat-card stat-warning">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-pending">0</div>
+                <div class="stat-label">Pending Requests</div>
+              </div>
+            </div>
+            <div class="stat-card stat-teal">
+              <div class="stat-icon">🧑‍🤝‍🧑</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-patients">0</div>
+                <div class="stat-label">Total Patients</div>
+              </div>
+            </div>
+            <div class="stat-card stat-success">
+              <div class="stat-icon">✅</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-completed-month">0</div>
+                <div class="stat-label">Completed This Month</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Today's Schedule</h3>
+            <div id="today-schedule-list"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Appointments This Week</h3>
+            <div class="chart-bars" id="weekly-appointments-chart"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Appointment Status Breakdown</h3>
+            <div class="status-bars" id="appt-status-bars"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Recent Patients</h3>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Email</th>
+                    <th>Last Visit</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-patients-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['doctor'], active: '' });
+      const user = getCurrentUser();
+      if (user) {
+        document.getElementById('sidebar-avatar').innerHTML = avatarHTML(user.name, user.avatar, 64);
+        document.getElementById('sidebar-name').textContent = user.name;
+      }
+      initDoctorDashboard();
+    });
+  </script>
+</body>
+</html>

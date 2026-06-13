@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo">🏥 MediCare+</div>
+      <h2>Welcome Back</h2>
+      <p class="auth-sub">Sign in to manage your appointments, records and more.</p>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" class="form-control" id="login-email" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <div style="position:relative;">
+            <input type="password" class="form-control" id="login-password" placeholder="Enter your password" style="padding-right:2.6rem;">
+            <button type="button" id="toggle-password" style="position:absolute; right:0.6rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:1.05rem;">👁️</button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
+      </form>
+
+      <div class="demo-accounts">
+        <h4>Demo Accounts (click to autofill)</h4>
+        <div class="demo-account-row">
+          <span>🧑 Patient</span>
+          <button type="button" class="btn btn-outline btn-xs demo-login-btn" data-email="patient@example.com" data-password="password123">
+            <code>patient@example.com</code> / <code>password123</code>
+          </button>
+        </div>
+        <div class="demo-account-row">
+          <span>🩺 Doctor</span>
+          <button type="button" class="btn btn-outline btn-xs demo-login-btn" data-email="doctor@example.com" data-password="password123">
+            <code>doctor@example.com</code> / <code>password123</code>
+          </button>
+        </div>
+        <div class="demo-account-row">
+          <span>🛠️ Admin</span>
+          <button type="button" class="btn btn-outline btn-xs demo-login-btn" data-email="admin@example.com" data-password="password123">
+            <code>admin@example.com</code> / <code>password123</code>
+          </button>
+        </div>
+      </div>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Create one for free</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ active: '' });
+      initLoginPage();
+    });
+  </script>
+</body>
+</html>

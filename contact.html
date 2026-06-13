@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Contact Us</h1>
+      <p>Have a question or need help? Reach out and our team will get back to you.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-layout">
+        <div class="contact-info-card">
+          <h3>Get in Touch</h3>
+          <div class="contact-info-item">
+            <span class="contact-icon">📍</span>
+            <div><h4>Address</h4><p>123 Wellness Avenue, Health City, HC 10101</p></div>
+          </div>
+          <div class="contact-info-item">
+            <span class="contact-icon">📞</span>
+            <div><h4>Phone</h4><p>+1 (800) 555-0199</p></div>
+          </div>
+          <div class="contact-info-item">
+            <span class="contact-icon">✉️</span>
+            <div><h4>Email</h4><p>support@medicareplus-demo.com</p></div>
+          </div>
+          <div class="contact-info-item">
+            <span class="contact-icon">🕒</span>
+            <div><h4>Business Hours</h4><p>Mon - Sat: 8:00 AM - 8:00 PM</p></div>
+          </div>
+          <div class="contact-info-item">
+            <span class="contact-icon">🚨</span>
+            <div><h4>Emergency</h4><p>In a medical emergency, call your local emergency number immediately.</p></div>
+          </div>
+        </div>
+
+        <div class="contact-form-card">
+          <h3>Send Us a Message</h3>
+          <div id="contact-alert"></div>
+          <form id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contact-name">Full Name</label>
+                <input type="text" class="form-control" id="contact-name" placeholder="Your full name">
+              </div>
+              <div class="form-group">
+                <label for="contact-email">Email Address</label>
+                <input type="email" class="form-control" id="contact-email" placeholder="you@example.com">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="contact-subject">Subject</label>
+              <input type="text" class="form-control" id="contact-subject" placeholder="What is this about?">
+            </div>
+            <div class="form-group">
+              <label for="contact-message">Message</label>
+              <textarea class="form-control" id="contact-message" placeholder="How can we help you?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ active: 'contact' });
+      prefillContactForm();
+      bindContactForm();
+    });
+
+    function prefillContactForm() {
+      const user = getCurrentUser();
+      if (!user) return;
+      document.getElementById('contact-name').value = user.name;
+      document.getElementById('contact-email').value = user.email;
+    }
+
+    function bindContactForm() {
+      const form = document.getElementById('contact-form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearFieldErrors(form);
+
+        const name = document.getElementById('contact-name').value.trim();
+        const email = document.getElementById('contact-email').value.trim();
+        const subject = document.getElementById('contact-subject').value.trim();
+        const message = document.getElementById('contact-message').value.trim();
+
+        let valid = true;
+        if (!name) { showFieldError('contact-name', 'Please enter your name.'); valid = false; }
+        if (!validateEmail(email)) { showFieldError('contact-email', 'Please enter a valid email address.'); valid = false; }
+        if (!subject) { showFieldError('contact-subject', 'Please enter a subject.'); valid = false; }
+        if (!message) { showFieldError('contact-message', 'Please enter a message.'); valid = false; }
+        if (!valid) return;
+
+        DB.insert(DB.KEYS.INQUIRIES, {
+          id: generateId('inq'),
+          name, email, subject, message,
+          date: todayStr(),
+          status: 'new'
+        });
+
+        document.getElementById('contact-alert').innerHTML =
+          `<div class="alert alert-success">✅ Thank you, ${escapeHtml(name)}! Your message has been received. Our team will get back to you shortly.</div>`;
+        form.reset();
+        prefillContactForm();
+        showToast('Message sent successfully!', 'success');
+      });
+    }
+  </script>
+</body>
+</html>

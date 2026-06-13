@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reviews | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-profile">
+            <div id="sidebar-avatar"></div>
+            <div class="name" id="sidebar-name">—</div>
+            <div class="role">Patient</div>
+          </div>
+          <h4>Menu</h4>
+          <nav class="sidebar-nav">
+            <a href="patient-dashboard.html">🏠 Dashboard</a>
+            <a href="my-appointments.html">📅 My Appointments</a>
+            <a href="doctors.html">🩺 Find Doctors</a>
+            <a href="medical-records.html">📋 Medical Records</a>
+            <a href="prescriptions.html">💊 Prescriptions</a>
+            <a href="billing.html">💳 Billing &amp; Invoices</a>
+            <a href="calendar.html">🗓️ Calendar</a>
+            <a href="reviews.html" class="active">⭐ My Reviews</a>
+            <a href="notifications.html">🔔 Notifications</a>
+            <a href="settings.html">⚙️ Settings</a>
+          </nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-content-header">
+            <div>
+              <h2>My Reviews</h2>
+              <p class="text-light mb-0">Share feedback about completed appointments and manage your past reviews.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Appointments Awaiting Review</h3>
+            <div id="reviewable-appointments"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>My Submitted Reviews</h3>
+            <div id="my-reviews-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/doctors.js"></script>
+  <script src="assets/js/records.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['patient'], active: '' });
+      const user = getCurrentUser();
+      if (user) {
+        document.getElementById('sidebar-avatar').innerHTML = avatarHTML(user.name, user.avatar, 64);
+        document.getElementById('sidebar-name').textContent = user.name;
+      }
+      initReviewsPage();
+    });
+  </script>
+</body>
+</html>

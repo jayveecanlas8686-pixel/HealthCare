@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-profile">
+            <div id="sidebar-avatar"></div>
+            <div class="name" id="sidebar-name">—</div>
+            <div class="role" id="sidebar-role">—</div>
+          </div>
+          <h4>Menu</h4>
+          <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-content-header">
+            <div>
+              <h2 id="calendar-page-title">Calendar</h2>
+              <p class="text-light mb-0">View your appointments by date.</p>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="calendar-header">
+              <button class="btn btn-outline btn-sm" id="cal-prev-btn">◀ Prev</button>
+              <h3 id="calendar-title">—</h3>
+              <div style="display:flex; gap:0.5rem;">
+                <button class="btn btn-outline btn-sm" id="cal-today-btn">Today</button>
+                <button class="btn btn-outline btn-sm" id="cal-next-btn">Next ▶</button>
+              </div>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3 id="day-details-title">—</h3>
+            <div id="day-appointments-list"></div>
+          </div>
+
+          <div class="chart-card" id="slot-management" style="display:none;">
+            <h3>Manage Availability</h3>
+            <p class="text-light">Click a time slot to block or unblock it for patient bookings.</p>
+            <div class="time-slot-grid" id="slot-management-grid"></div>
+            <h4 class="mt-2 mb-1" style="font-size:0.85rem;">Blocked Slots</h4>
+            <div id="blocked-slots-chips"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/doctors.js"></script>
+  <script src="assets/js/calendar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['patient', 'doctor'], active: '' });
+      renderSidebar('calendar');
+
+      const user = getCurrentUser();
+      if (user && user.role === 'doctor') {
+        document.getElementById('calendar-page-title').textContent = 'My Schedule';
+      }
+
+      initCalendarPage();
+    });
+
+    function renderSidebar(activeKey) {
+      const user = getCurrentUser();
+      if (!user) return;
+      document.getElementById('sidebar-avatar').innerHTML = avatarHTML(user.name, user.avatar, 64);
+      document.getElementById('sidebar-name').textContent = user.name;
+      document.getElementById('sidebar-role').textContent = user.role;
+
+      const patientLinks = [
+        { href: 'patient-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'my-appointments.html', icon: '📅', label: 'My Appointments', key: 'appointments' },
+        { href: 'doctors.html', icon: '🩺', label: 'Find Doctors', key: 'doctors' },
+        { href: 'medical-records.html', icon: '📋', label: 'Medical Records', key: 'records' },
+        { href: 'prescriptions.html', icon: '💊', label: 'Prescriptions', key: 'prescriptions' },
+        { href: 'billing.html', icon: '💳', label: 'Billing & Invoices', key: 'billing' },
+        { href: 'calendar.html', icon: '🗓️', label: 'Calendar', key: 'calendar' },
+        { href: 'reviews.html', icon: '⭐', label: 'My Reviews', key: 'reviews' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const doctorLinks = [
+        { href: 'doctor-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'my-appointments.html', icon: '📅', label: 'Appointments', key: 'appointments' },
+        { href: 'medical-records.html', icon: '📋', label: 'Medical Records', key: 'records' },
+        { href: 'prescriptions.html', icon: '💊', label: 'Prescriptions', key: 'prescriptions' },
+        { href: 'billing.html', icon: '💳', label: 'Billing & Invoices', key: 'billing' },
+        { href: 'calendar.html', icon: '🗓️', label: 'My Schedule', key: 'calendar' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const links = user.role === 'doctor' ? doctorLinks : patientLinks;
+
+      document.getElementById('sidebar-nav').innerHTML = links.map(l => `
+        <a href="${l.href}" class="${l.key === activeKey ? 'active' : ''}">${l.icon} ${l.label}</a>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

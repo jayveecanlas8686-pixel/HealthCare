@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Dashboard | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-profile">
+            <div id="sidebar-avatar"></div>
+            <div class="name" id="sidebar-name">—</div>
+            <div class="role">Patient</div>
+          </div>
+          <h4>Menu</h4>
+          <nav class="sidebar-nav">
+            <a href="patient-dashboard.html" class="active">🏠 Dashboard</a>
+            <a href="my-appointments.html">📅 My Appointments</a>
+            <a href="doctors.html">🩺 Find Doctors</a>
+            <a href="medical-records.html">📋 Medical Records</a>
+            <a href="prescriptions.html">💊 Prescriptions</a>
+            <a href="billing.html">💳 Billing &amp; Invoices</a>
+            <a href="calendar.html">🗓️ Calendar</a>
+            <a href="reviews.html">⭐ My Reviews</a>
+            <a href="notifications.html">🔔 Notifications</a>
+            <a href="settings.html">⚙️ Settings</a>
+          </nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-content-header">
+            <div>
+              <h2 id="dashboard-welcome">Welcome back!</h2>
+              <p class="text-light mb-0">Here's an overview of your healthcare activity.</p>
+            </div>
+            <a href="doctors.html" class="btn btn-primary">+ Book Appointment</a>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📅</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-upcoming">0</div>
+                <div class="stat-label">Upcoming Appointments</div>
+              </div>
+            </div>
+            <div class="stat-card stat-success">
+              <div class="stat-icon">✅</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-completed">0</div>
+                <div class="stat-label">Completed Visits</div>
+              </div>
+            </div>
+            <div class="stat-card stat-teal">
+              <div class="stat-icon">💊</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-prescriptions">0</div>
+                <div class="stat-label">Prescriptions</div>
+              </div>
+            </div>
+            <div class="stat-card stat-warning">
+              <div class="stat-icon">💳</div>
+              <div class="stat-info">
+                <div class="stat-value" id="stat-spent">$0.00</div>
+                <div class="stat-label">Total Spent</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Upcoming Appointments</h3>
+            <div id="upcoming-appointments-list"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Appointment Status Breakdown</h3>
+            <div class="status-bars" id="appt-status-bars"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Appointment History (Last 6 Months)</h3>
+            <div class="chart-bars" id="appointment-history-chart"></div>
+          </div>
+
+          <div class="chart-card">
+            <h3>Recent Activity</h3>
+            <div id="recent-activity-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['patient'], active: '' });
+      const user = getCurrentUser();
+      if (user) {
+        document.getElementById('sidebar-avatar').innerHTML = avatarHTML(user.name, user.avatar, 64);
+        document.getElementById('sidebar-name').textContent = user.name;
+      }
+      initPatientDashboard();
+    });
+  </script>
+</body>
+</html>

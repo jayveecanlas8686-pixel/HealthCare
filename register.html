@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <div class="auth-wrap">
+    <div class="auth-card" style="max-width:520px;">
+      <div class="auth-logo">🏥 MediCare+</div>
+      <h2>Create Your Account</h2>
+      <p class="auth-sub">Sign up as a patient to book appointments and manage your care.</p>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" class="form-control" id="reg-name" placeholder="Your full name">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-email">Email Address</label>
+            <input type="email" class="form-control" id="reg-email" placeholder="you@example.com">
+          </div>
+          <div class="form-group">
+            <label for="reg-phone">Phone Number</label>
+            <input type="tel" class="form-control" id="reg-phone" placeholder="+1 (555) 123-4567">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <div style="position:relative;">
+              <input type="password" class="form-control" id="reg-password" placeholder="At least 6 characters" style="padding-right:2.6rem;">
+              <button type="button" id="toggle-password" style="position:absolute; right:0.6rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:1.05rem;">👁️</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-confirm">Confirm Password</label>
+            <input type="password" class="form-control" id="reg-confirm" placeholder="Re-enter your password">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="reg-terms">
+            I agree to the Terms of Service and Privacy Policy
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Create Account</button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="login.html">Sign in here</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ active: '' });
+      initRegisterPage();
+    });
+  </script>
+</body>
+</html>

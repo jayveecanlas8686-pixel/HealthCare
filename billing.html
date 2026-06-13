@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing &amp; Invoices | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-profile">
+            <div id="sidebar-avatar"></div>
+            <div class="name" id="sidebar-name">—</div>
+            <div class="role" id="sidebar-role">—</div>
+          </div>
+          <h4>Menu</h4>
+          <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-content-header">
+            <div>
+              <h2>Billing &amp; Invoices</h2>
+              <p class="text-light mb-0">Track payments, dues and view your invoice history.</p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card stat-success" id="stat-card-1">
+              <div class="stat-icon" id="stat-icon-1">💰</div>
+              <div class="stat-info">
+                <div class="stat-value" id="billing-stat-primary">$0.00</div>
+                <div class="stat-label" id="billing-stat-primary-label">Total Spent</div>
+              </div>
+            </div>
+            <div class="stat-card stat-warning">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-info">
+                <div class="stat-value" id="billing-stat-due">$0.00</div>
+                <div class="stat-label" id="billing-stat-due-label">Amount Due</div>
+              </div>
+            </div>
+            <div class="stat-card stat-teal">
+              <div class="stat-icon">🧾</div>
+              <div class="stat-info">
+                <div class="stat-value" id="billing-stat-count">0</div>
+                <div class="stat-label">Total Invoices</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-tabs">
+            <button class="filter-tab" data-filter="all">All Invoices</button>
+            <button class="filter-tab" data-filter="paid">Paid</button>
+            <button class="filter-tab" data-filter="unpaid">Unpaid</button>
+          </div>
+
+          <div id="invoices-list"></div>
+
+          <div class="chart-card" id="admin-billing-card" style="display:none;">
+            <h3>All Invoices</h3>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-billing-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/records.js"></script>
+  <script src="assets/js/billing.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['patient', 'doctor', 'admin'], active: '' });
+      renderSidebar('billing');
+
+      const user = getCurrentUser();
+      if (user) {
+        if (user.role === 'patient') {
+          document.getElementById('billing-stat-primary-label').textContent = 'Total Spent';
+          document.getElementById('billing-stat-primary').id = 'billing-stat-spent';
+        } else if (user.role === 'doctor') {
+          document.getElementById('billing-stat-primary-label').textContent = 'Total Earned';
+          document.getElementById('billing-stat-due-label').textContent = 'Pending Payments';
+          document.getElementById('billing-stat-primary').id = 'billing-stat-earned';
+        } else {
+          document.getElementById('billing-stat-primary-label').textContent = 'Total Revenue';
+          document.getElementById('billing-stat-due-label').textContent = 'Pending Payments';
+          document.getElementById('billing-stat-primary').id = 'billing-stat-revenue';
+          document.getElementById('admin-billing-card').style.display = '';
+          const invoicesList = document.getElementById('invoices-list');
+          if (invoicesList) invoicesList.remove();
+        }
+      }
+
+      initBillingPage();
+    });
+
+    function renderSidebar(activeKey) {
+      const user = getCurrentUser();
+      if (!user) return;
+      document.getElementById('sidebar-avatar').innerHTML = avatarHTML(user.name, user.avatar, 64);
+      document.getElementById('sidebar-name').textContent = user.name;
+      document.getElementById('sidebar-role').textContent = user.role;
+
+      const patientLinks = [
+        { href: 'patient-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'my-appointments.html', icon: '📅', label: 'My Appointments', key: 'appointments' },
+        { href: 'doctors.html', icon: '🩺', label: 'Find Doctors', key: 'doctors' },
+        { href: 'medical-records.html', icon: '📋', label: 'Medical Records', key: 'records' },
+        { href: 'prescriptions.html', icon: '💊', label: 'Prescriptions', key: 'prescriptions' },
+        { href: 'billing.html', icon: '💳', label: 'Billing & Invoices', key: 'billing' },
+        { href: 'calendar.html', icon: '🗓️', label: 'Calendar', key: 'calendar' },
+        { href: 'reviews.html', icon: '⭐', label: 'My Reviews', key: 'reviews' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const doctorLinks = [
+        { href: 'doctor-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'my-appointments.html', icon: '📅', label: 'Appointments', key: 'appointments' },
+        { href: 'medical-records.html', icon: '📋', label: 'Medical Records', key: 'records' },
+        { href: 'prescriptions.html', icon: '💊', label: 'Prescriptions', key: 'prescriptions' },
+        { href: 'billing.html', icon: '💳', label: 'Billing & Invoices', key: 'billing' },
+        { href: 'calendar.html', icon: '🗓️', label: 'My Schedule', key: 'calendar' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const adminLinks = [
+        { href: 'admin-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'billing.html', icon: '💳', label: 'Billing Overview', key: 'billing' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const links = user.role === 'doctor' ? doctorLinks : user.role === 'admin' ? adminLinks : patientLinks;
+
+      document.getElementById('sidebar-nav').innerHTML = links.map(l => `
+        <a href="${l.href}" class="${l.key === activeKey ? 'active' : ''}">${l.icon} ${l.label}</a>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

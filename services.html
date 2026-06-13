@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Services | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <header class="page-header">
+    <div class="container">
+      <h1>Our Services</h1>
+      <p>From booking to billing, everything you need to manage your healthcare in one platform.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">What We Offer</span>
+        <h2>Comprehensive Healthcare Services</h2>
+        <p>Explore the full range of services available through MediCare+.</p>
+      </div>
+      <div class="services-grid" id="services-grid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Specialties</span>
+        <h2>Care Across Every Specialty</h2>
+        <p>Tap a specialty to browse the doctors who treat it.</p>
+      </div>
+      <div class="specialties-grid" id="specialties-grid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">How It Works</span>
+        <h2>Book an Appointment in 3 Simple Steps</h2>
+        <p>Getting the care you need has never been easier.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🔍</div>
+          <h3>1. Search &amp; Compare</h3>
+          <p>Browse doctors by specialty, location, price and rating, and view detailed profiles with patient reviews.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🗓️</div>
+          <h3>2. Choose a Time</h3>
+          <p>Pick an appointment type — in-person, online, follow-up or emergency — and select an available time slot.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">✅</div>
+          <h3>3. Confirm &amp; Go</h3>
+          <p>Get an instant confirmation with your reference number, then manage everything from your dashboard.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-section">
+        <h2>Ready to Book Your Appointment?</h2>
+        <p>Find a specialist that fits your needs and schedule your visit today.</p>
+        <div class="cta-buttons">
+          <a href="doctors.html" class="btn btn-teal btn-lg">Find a Doctor</a>
+          <a href="register.html" class="btn btn-outline-white btn-lg">Create Free Account</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ active: 'services' });
+      renderServicesGrid();
+      renderSpecialtiesGrid();
+    });
+
+    function renderServicesGrid() {
+      const grid = document.getElementById('services-grid');
+      grid.innerHTML = SERVICES.map(s => `
+        <div class="service-card">
+          <div class="service-icon">${s.icon}</div>
+          <h3>${escapeHtml(s.title)}</h3>
+          <p>${escapeHtml(s.desc)}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderSpecialtiesGrid() {
+      const grid = document.getElementById('specialties-grid');
+      grid.innerHTML = SPECIALTIES.map(s => `
+        <a href="doctors.html?specialty=${encodeURIComponent(s.key)}" class="specialty-card">
+          <div class="specialty-icon">${s.icon}</div>
+          <h3>${escapeHtml(s.key)}</h3>
+          <p>${escapeHtml(s.desc)}</p>
+        </a>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

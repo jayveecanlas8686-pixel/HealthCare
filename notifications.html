@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications | MediCare+</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="section">
+    <div class="container">
+      <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+          <div class="sidebar-profile">
+            <div id="sidebar-avatar"></div>
+            <div class="name" id="sidebar-name">—</div>
+            <div class="role" id="sidebar-role">—</div>
+          </div>
+          <h4>Menu</h4>
+          <nav class="sidebar-nav" id="sidebar-nav"></nav>
+        </aside>
+
+        <div class="dashboard-content">
+          <div class="dashboard-content-header">
+            <div>
+              <h2>Notifications</h2>
+              <p class="text-light mb-0">Stay up to date with appointments, prescriptions and account activity.</p>
+            </div>
+            <button class="btn btn-outline" id="mark-all-read-btn">✓ Mark All as Read</button>
+          </div>
+
+          <div class="filter-tabs">
+            <button class="filter-tab" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="unread">Unread</button>
+          </div>
+
+          <div id="notifications-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script>
+    let notifFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ requireRole: ['patient', 'doctor', 'admin'], active: '' });
+      renderSidebar('notifications');
+      bindNotifFilters();
+      bindMarkAllRead();
+      renderNotifications();
+    });
+
+    function bindNotifFilters() {
+      document.querySelectorAll('.filter-tab[data-filter]').forEach(tab => {
+        if (tab.dataset.filter === notifFilter) tab.classList.add('active');
+        tab.addEventListener('click', () => {
+          notifFilter = tab.dataset.filter;
+          document.querySelectorAll('.filter-tab[data-filter]').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          renderNotifications();
+        });
+      });
+    }
+
+    function bindMarkAllRead() {
+      document.getElementById('mark-all-read-btn').addEventListener('click', () => {
+        const user = getCurrentUser();
+        const notifs = DB.findAll(DB.KEYS.NOTIFICATIONS, n => n.userId === user.id && !n.read);
+        notifs.forEach(n => DB.update(DB.KEYS.NOTIFICATIONS, n.id, { read: true }));
+        showToast('All notifications marked as read.', 'success');
+        renderNotifications();
+      });
+    }
+
+    function renderNotifications() {
+      const user = getCurrentUser();
+      const container = document.getElementById('notifications-list');
+      let notifs = DB.findAll(DB.KEYS.NOTIFICATIONS, n => n.userId === user.id)
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      if (notifFilter === 'unread') notifs = notifs.filter(n => !n.read);
+
+      if (notifs.length === 0) {
+        container.innerHTML = renderEmptyState('🔔', 'No Notifications', 'You\'re all caught up! New notifications will appear here.');
+        return;
+      }
+
+      container.innerHTML = notifs.map(n => `
+        <div class="notification-item ${n.read ? '' : 'unread'}">
+          <div class="notif-icon">${notifIcon(n.type)}</div>
+          <div class="notif-content">
+            <div class="notif-title">${escapeHtml(n.title)}</div>
+            <p class="notif-msg">${escapeHtml(n.message)}</p>
+            <div class="notif-date">${formatDate(n.date)}</div>
+          </div>
+          <div class="notif-actions">
+            ${!n.read ? `<button class="btn btn-outline btn-xs" onclick="markNotificationRead('${n.id}')">Mark Read</button>` : ''}
+            <button class="btn btn-danger btn-xs" onclick="deleteNotification('${n.id}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function markNotificationRead(id) {
+      DB.update(DB.KEYS.NOTIFICATIONS, id, { read: true });
+      renderNotifications();
+    }
+
+    function deleteNotification(id) {
+      DB.delete(DB.KEYS.NOTIFICATIONS, id);
+      showToast('Notification deleted.', 'success');
+      renderNotifications();
+    }
+
+    function renderSidebar(activeKey) {
+      const user = getCurrentUser();
+      if (!user) return;
+      document.getElementById('sidebar-avatar').innerHTML = avatarHTML(user.name, user.avatar, 64);
+      document.getElementById('sidebar-name').textContent = user.name;
+      document.getElementById('sidebar-role').textContent = user.role;
+
+      const patientLinks = [
+        { href: 'patient-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'my-appointments.html', icon: '📅', label: 'My Appointments', key: 'appointments' },
+        { href: 'doctors.html', icon: '🩺', label: 'Find Doctors', key: 'doctors' },
+        { href: 'medical-records.html', icon: '📋', label: 'Medical Records', key: 'records' },
+        { href: 'prescriptions.html', icon: '💊', label: 'Prescriptions', key: 'prescriptions' },
+        { href: 'billing.html', icon: '💳', label: 'Billing & Invoices', key: 'billing' },
+        { href: 'calendar.html', icon: '🗓️', label: 'Calendar', key: 'calendar' },
+        { href: 'reviews.html', icon: '⭐', label: 'My Reviews', key: 'reviews' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const doctorLinks = [
+        { href: 'doctor-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'my-appointments.html', icon: '📅', label: 'Appointments', key: 'appointments' },
+        { href: 'medical-records.html', icon: '📋', label: 'Medical Records', key: 'records' },
+        { href: 'prescriptions.html', icon: '💊', label: 'Prescriptions', key: 'prescriptions' },
+        { href: 'billing.html', icon: '💳', label: 'Billing & Invoices', key: 'billing' },
+        { href: 'calendar.html', icon: '🗓️', label: 'My Schedule', key: 'calendar' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const adminLinks = [
+        { href: 'admin-dashboard.html', icon: '🏠', label: 'Dashboard', key: 'dashboard' },
+        { href: 'billing.html', icon: '💳', label: 'Billing Overview', key: 'billing' },
+        { href: 'notifications.html', icon: '🔔', label: 'Notifications', key: 'notifications' },
+        { href: 'settings.html', icon: '⚙️', label: 'Settings', key: 'settings' }
+      ];
+      const links = user.role === 'doctor' ? doctorLinks : user.role === 'admin' ? adminLinks : patientLinks;
+
+      document.getElementById('sidebar-nav').innerHTML = links.map(l => `
+        <a href="${l.href}" class="${l.key === activeKey ? 'active' : ''}">${l.icon} ${l.label}</a>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediCare+ | Find Doctors & Book Appointments Online</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <div id="navbar-placeholder"></div>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">🩺 Trusted by 50,000+ patients</span>
+        <h1>Your Health, One Click Away</h1>
+        <p>Find top-rated doctors, check real-time availability, and book appointments online — anytime, anywhere.</p>
+      </div>
+
+      <div class="search-box">
+        <form id="hero-search-form">
+          <div class="search-fields">
+            <div class="search-field">
+              <label for="search-keyword">What are you looking for?</label>
+              <input type="text" id="search-keyword" placeholder="Doctor name, specialty, condition...">
+            </div>
+            <div class="search-field">
+              <label for="search-specialty">Specialty</label>
+              <select id="search-specialty">
+                <option value="">All Specialties</option>
+              </select>
+            </div>
+            <div class="search-field">
+              <label for="search-location">Location</label>
+              <select id="search-location">
+                <option value="">All Locations</option>
+              </select>
+            </div>
+            <div class="search-field">
+              <label for="search-availability">Availability</label>
+              <select id="search-availability">
+                <option value="">Any Day</option>
+                <option value="today">Available Today</option>
+              </select>
+            </div>
+            <div class="search-btn-wrap">
+              <button type="submit" class="btn btn-primary">🔍 Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">8+</div><div class="lbl">Specialties</div></div>
+        <div class="hero-stat"><div class="num">8</div><div class="lbl">Verified Doctors</div></div>
+        <div class="hero-stat"><div class="num">50K+</div><div class="lbl">Happy Patients</div></div>
+        <div class="hero-stat"><div class="num">4.8 ★</div><div class="lbl">Average Rating</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="emergency-banner">
+    🚨 Medical Emergency? Call your local emergency number immediately — <a href="contact.html">contact us</a> for non-emergency support only.
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Browse by Specialty</span>
+        <h2>Find the Right Specialist</h2>
+        <p>Explore our network of board-certified doctors across a wide range of specialties.</p>
+      </div>
+      <div class="specialties-grid" id="specialties-grid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Top Rated</span>
+        <h2>Meet Our Featured Doctors</h2>
+        <p>Highly rated specialists ready to help you feel your best, with real-time availability.</p>
+      </div>
+      <div class="doctors-grid" id="featured-doctors-grid"></div>
+      <div class="text-center mt-3">
+        <a href="doctors.html" class="btn btn-outline btn-lg">View All Doctors</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">What We Offer</span>
+        <h2>Comprehensive Healthcare Services</h2>
+        <p>Everything you need to manage your health journey, all in one place.</p>
+      </div>
+      <div class="services-grid" id="services-grid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="testimonials-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Patient Stories</span>
+        <h2>What Our Patients Say</h2>
+        <p>Real feedback from patients who booked appointments through MediCare+.</p>
+      </div>
+      <div class="testimonials-grid" id="testimonials-grid"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-section">
+        <h2>Ready to Take Control of Your Health?</h2>
+        <p>Create a free account and book your first appointment in just a few minutes.</p>
+        <div class="cta-buttons">
+          <a href="register.html" class="btn btn-teal btn-lg">Get Started Free</a>
+          <a href="doctors.html" class="btn btn-outline-white btn-lg">Browse Doctors</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/doctors.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initPage({ active: 'home' });
+      renderSpecialtiesGrid();
+      renderFeaturedDoctors();
+      renderServicesGrid();
+      renderTestimonials();
+      populateSearchOptions();
+      bindHeroSearch();
+    });
+
+    function renderSpecialtiesGrid() {
+      const grid = document.getElementById('specialties-grid');
+      grid.innerHTML = SPECIALTIES.map(s => `
+        <a href="doctors.html?specialty=${encodeURIComponent(s.key)}" class="specialty-card">
+          <div class="specialty-icon">${s.icon}</div>
+          <h3>${escapeHtml(s.key)}</h3>
+          <p>${escapeHtml(s.desc)}</p>
+        </a>
+      `).join('');
+    }
+
+    function renderFeaturedDoctors() {
+      const grid = document.getElementById('featured-doctors-grid');
+      const featured = DB.findAll(DB.KEYS.DOCTORS, d => d.featured && d.status === 'active').slice(0, 6);
+      grid.innerHTML = featured.map(renderDoctorCard).join('');
+    }
+
+    function renderServicesGrid() {
+      const grid = document.getElementById('services-grid');
+      grid.innerHTML = SERVICES.map(s => `
+        <div class="service-card">
+          <div class="service-icon">${s.icon}</div>
+          <h3>${escapeHtml(s.title)}</h3>
+          <p>${escapeHtml(s.desc)}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderTestimonials() {
+      const section = document.getElementById('testimonials-section');
+      const grid = document.getElementById('testimonials-grid');
+      const reviews = DB.findAll(DB.KEYS.REVIEWS, r => r.rating >= 4 && r.comment)
+        .sort((a, b) => b.rating - a.rating || new Date(b.date) - new Date(a.date))
+        .slice(0, 6);
+
+      if (reviews.length === 0) {
+        if (section) section.style.display = 'none';
+        return;
+      }
+
+      grid.innerHTML = reviews.map(r => {
+        const doctor = DB.findById(DB.KEYS.DOCTORS, r.doctorId);
+        return `
+        <div class="testimonial-card">
+          <div class="testimonial-rating">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5 - Math.round(r.rating))}</div>
+          <p class="testimonial-text">"${escapeHtml(r.comment)}"</p>
+          <div class="testimonial-author">
+            <img src="https://i.pravatar.cc/100?u=${encodeURIComponent(r.patientName)}" alt="${escapeHtml(r.patientName)}">
+            <div>
+              <div class="testimonial-name">${escapeHtml(r.patientName)}</div>
+              <div class="testimonial-role">Patient${doctor ? ' of ' + escapeHtml(doctor.name) : ''}</div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function populateSearchOptions() {
+      const specialtySelect = document.getElementById('search-specialty');
+      SPECIALTIES.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.key;
+        opt.textContent = `${s.icon} ${s.key}`;
+        specialtySelect.appendChild(opt);
+      });
+
+      const locationSelect = document.getElementById('search-location');
+      const cities = [...new Set(DB.getAll(DB.KEYS.DOCTORS).map(d => d.city))].sort();
+      cities.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        locationSelect.appendChild(opt);
+      });
+    }
+
+    function bindHeroSearch() {
+      document.getElementById('hero-search-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const params = new URLSearchParams();
+        const keyword = document.getElementById('search-keyword').value.trim();
+        const specialty = document.getElementById('search-specialty').value;
+        const city = document.getElementById('search-location').value;
+        const availability = document.getElementById('search-availability').value;
+        if (keyword) params.set('search', keyword);
+        if (specialty) params.set('specialty', specialty);
+        if (city) params.set('city', city);
+        if (availability === 'today') params.set('availableOnly', '1');
+        window.location.href = 'doctors.html' + (params.toString() ? '?' + params.toString() : '');
+      });
+    }
+  </script>
+</body>
+</html>
